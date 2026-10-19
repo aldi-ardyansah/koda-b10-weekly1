@@ -241,7 +241,7 @@ function riwayatPemesanan() {
             console.log(`Pesanan ke-${i + 1}`);
             console.log("-----------------");
 
-            for (j = 0; j < pesanan.detailPesanan; j++) {
+            for (let j = 0; j < pesanan.detailPesanan.length; j++) {
                 const menu = pesanan.detailPesanan[j];
                 console.log(`${menu.namaMenu} x${menu.kuantitasMenu} = Rp${menu.subtotal}`);
             }
