@@ -68,9 +68,9 @@ function menuUtama() {
 
 // Membuat function pilihMenu
 function pilihMenu() {
-    console.log("===========");
-    console.log("DAFTAR MENU");
-    console.log("===========");
+    console.log("==========");
+    console.log("PILIH MENU");
+    console.log("==========");
 
     // Menampilkan daftar menu dalam array daftarMenu dengan perulangan
     for (let i = 0; i < daftarMenu.length; i++) {
@@ -78,10 +78,10 @@ function pilihMenu() {
         console.log(`${menu.idMenu}. ${menu.namaMenu} - Rp${menu.hargaMenu}`);
     }
 
-    console.log("===========");
+    console.log("==========");
     console.log("13. Checkout Menu");
     console.log("0. Kembali");
-    console.log("===========");
+    console.log("==========");
 
     // Membuat opsi
     // Jika pilih 1-12 maka pilih menu lalu menambah kuantitasMenu
