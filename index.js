@@ -1,13 +1,10 @@
-// Mengimpor modul built-in readline pada Node.js
-const readline = require("node:readline");
+// Import readline/promises
+import * as readline from 'node:readline/promises';
+import { stdin as input, stdout as output } from 'node:process';
 
-// Membuat interface readline
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+const rl = readline.createInterface({ input, output });
 
-// Membuat array daftarMenu yang berisi objek-objek dengan properti idMenu, namaMenu, hargaMenu dan kuantitasMenu
+// Membuat array daftarMenu yang berisi objek-objek menu dengan properti idMenu, namaMenu, hargaMenu dan kuantitasMenu
 const daftarMenu = [
     { idMenu: 1, namaMenu: "Mie Gacoan", hargaMenu: 13000, kuantitasMenu: 0 },
     { idMenu: 2, namaMenu: "Mie Hompimpa", hargaMenu: 13000, kuantitasMenu: 0 },
@@ -23,163 +20,141 @@ const daftarMenu = [
     { idMenu: 12, namaMenu: "Es Petak Umpet", hargaMenu: 12000, kuantitasMenu: 0 }
 ];
 
-// Membuat array kosong riwayatPesanan
-const riwayatPesanan = [];
+const arrayRiwayatPemesanan = [];
 
-// Membuat function menuUtama
-function menuUtama() {
-    console.log("=======================");
-    console.log("ORDER ONLINE MIE GACOAN");
-    console.log("=======================");
+let adaPesanan = false;
+
+// Function menuUtama
+async function menuUtama() {
+    console.log("=========================");
+    console.log("APLIKASI ORDER MIE GACOAN");
+    console.log("=========================");
     console.log("1. Pilih Menu");
-    console.log("2. Riwayat Pemesanan");
+    console.log("2. Keranjang Menu");
+    console.log("3. Riwayat Pemesanan");
     console.log("0. Keluar");
-    console.log("=======================");
+    console.log("-------------------------");
+    const answer = (await rl.question('Pilih opsi: ')).trim();
 
-    // Membuat opsi
-    // Jika pilih 1 jalankan function pilihMenu
-    // Jika pilih 2 jalankan function riwayatPemesanan
-    // Jika pilih 0 jalankan function menampilkan console log lalu keluar program
-    // Jika pilih selain 1, 2 dan 0 maka menampilkan console log lalu ke menuUtama
-    rl.question("Pilih opsi: ", (pilihan) => {
-        if (pilihan === "1") {
-            console.log("");
-            pilihMenu();
-        }
-        else if (pilihan === "2") {
-            console.log("");
-            riwayatPemesanan();
-        }
-        else if (pilihan === "0") {
-            console.log("");
-            console.log("Terima kasih telah menggunakan aplikasi Order Mie Gacoan!");
-            console.log("");
-            rl.close();
-        }
-        else {
-            console.log("");
-            rl.question("Pilihan tidak valid. Tekan Enter untuk kembali ke menu utama...", () => {
-                console.log("");
-                menuUtama();
-            });
-        }
-    });
-};
+    if (answer === "1") {
+        console.log("");
+        return pilihMenu();
+    }
+    else if (answer === "2") {
+        console.log("");
+        return keranjangMenu();
+    }
+    else if (answer === "3") {
+        console.log("");
+        return riwayatPemesanan();
+    }
+    else if (answer === "0") {
+        console.log("");
+        console.log("Terima kasih telah menggunakan aplikasi Order Mie Gacoan!");
+        console.log("");
+        rl.close();
+    }
+    else {
+        console.log("");
+        console.log("Silakan masukan opsi yang valid...");
+        console.log("");
+        return menuUtama();
+    }
+}
 
-// Membuat function pilihMenu
-function pilihMenu() {
+// Function pilihMenu
+async function pilihMenu() {
     console.log("==========");
     console.log("PILIH MENU");
     console.log("==========");
 
-    // Menampilkan daftar menu dalam array daftarMenu dengan perulangan
     for (let i = 0; i < daftarMenu.length; i++) {
         const menu = daftarMenu[i];
         console.log(`${menu.idMenu}. ${menu.namaMenu} - Rp${menu.hargaMenu}`);
     }
 
-    console.log("==========");
-    console.log("13. Checkout Menu");
-    console.log("0. Kembali");
-    console.log("==========");
+    console.log("0. Menu Utama");
+    console.log("----------");
+    const answer = (await rl.question('Pilih opsi: ')).trim();
 
-    // Membuat opsi
-    // Jika pilih 1-12 maka pilih menu lalu menambah kuantitasMenu
-    // Jika pilih 13 jalankan function checkoutMenu
-    // Jika pilih 0 jalankan function menuUtama
-    // Jika pilih selain 1, 2 dan 0 maka akan menampilkan console log lalu ke pilihMenu
-    rl.question("Pilih menu: ", (pilihan) => {
-        const idMenu = Number(pilihan);
+    if (answer === "0") {
+        console.log("");
+        return menuUtama();
+    }
+    else if (answer >= 1 && answer <= daftarMenu.length) {
+        console.log("");
 
-        if (pilihan === "0") {
+        const idMenu = Number(answer);
+        const menu = daftarMenu[idMenu - 1];
+
+        console.log("0. Kembali");
+        console.log("");
+        const answerJumlahMenu = await rl.question(`Masukan jumlah ${menu.namaMenu}: `);
+        if (answerJumlahMenu >= 1) {
+            menu.kuantitasMenu += Number(answerJumlahMenu);
+            adaPesanan = true;
             console.log("");
-            menuUtama();
+            console.log(`Menu ${menu.namaMenu} sebanyak ${menu.kuantitasMenu} pcs ditambahkan ke keranjang menu!`);
+            console.log("");
+            return pilihMenu();
         }
-        else if (pilihan === "13") {
-            console.log("");
-            checkoutMenu();
-        }
-        else if (Number.isInteger(idMenu) && idMenu >= 1 && idMenu <= daftarMenu.length) {
-            const menu = daftarMenu[idMenu - 1];
-
-            console.log("");
-
-            rl.question(`Masukan jumlah ${menu.namaMenu}: `, (jumlah) => {
-                const kuantitasMenu = Number(jumlah);
-
-                if (Number.isInteger(kuantitasMenu) && kuantitasMenu > 0) {
-                    menu.kuantitasMenu += kuantitasMenu;
-                    console.log("");
-                    console.log(`${menu.namaMenu} sebanyak ${menu.kuantitasMenu} ditambahkan ke keranjang.`);
-                }
-                else {
-                    console.log("");
-                    console.log("Jumlah harus berupa bilangan bulat lebih dari 0.");
-                }
-
-                console.log("");
-                pilihMenu();
-            });
+        else if (answerJumlahMenu.trim() === "0") {
+            return pilihMenu();
         }
         else {
             console.log("");
-            rl.question("Pilihan tidak valid. Tekan Enter untuk kembali ke pilih menu...", () => {
-                console.log("");
-                pilihMenu();
-            });
-        }
-    });
-};
-
-// Membuat function checkoutMenu
-function checkoutMenu() {
-    console.log("=============");
-    console.log("CHECKOUT MENU");
-    console.log("=============");
-
-    // Mendeklarasikan variabel totalPembayaran = 0
-    // Mendeklarasikan variabel adaPesanan = false
-    let totalPembayaran = 0;
-    let adaPesanan = false;
-
-    // Mencetak pesanan (Harga, Kuantitas dan Subtotal) menggunakan perulangan
-    for (let i = 0; i < daftarMenu.length; i++) {
-        const menu = daftarMenu[i];
-
-        if (menu.kuantitasMenu > 0) {
-            const subtotal = menu.hargaMenu * menu.kuantitasMenu;
-
-            totalPembayaran += subtotal;
-            adaPesanan = true;
-
-            console.log(menu.namaMenu);
-            console.log(`Harga     : Rp${menu.hargaMenu}`);
-            console.log(`Kuantitas : ${menu.kuantitasMenu}`);
-            console.log(`Subtotal  : Rp${subtotal}`);
-            console.log("-------------");
+            console.log("Jumlah harus berupa bilangan bulat lebih dari 0!");
+            console.log("");
+            return pilihMenu();
         }
     }
+    else {
+        console.log("");
+        console.log("Silakan masukan opsi yang valid...");
+        console.log("");
+        return pilihMenu();
+    }
+}
 
-    // Jika variabel adaPesanan false maka akan console log dan jalankan fungsi pilihMenu
+// Function keranjangMenu
+async function keranjangMenu() {
     if (!adaPesanan) {
-        console.log("Belum ada pesanan.");
-        pilihMenu();
-        return;
+        await rl.question("Keranjang menu kosong... Tekan ENTER untuk ke menu utama...");
+        console.log("");
+        return menuUtama();
     }
+    else {
+        console.log("==============");
+        console.log("KERANJANG MENU");
+        console.log("==============");
 
-    // Cetak variabel totalPembayaran
-    console.log(`Total Pembayaran: Rp${totalPembayaran}`);
-    console.log("=============");
-    console.log("");
+        let totalPembayaran = 0;
 
-    // Proses pembayaran dengan memilih y/n
-    // Jika y maka akan menyimpan detailPesanan ke dalam array untuk diakses function riwayatPemesanan
-    // Jika n maka akan kembali ke pilihMenu
-    // Jika bukan y atau n maka akan console log
-    rl.question("Lanjutkan pembayaran? (y/n) ", (pilihan) => {
-        pilihan = pilihan.trim().toLocaleLowerCase();
-        
-        if (pilihan === "y") {
+        for (let i = 0; i < daftarMenu.length; i++) {
+            const menu = daftarMenu[i];
+
+            if (menu.kuantitasMenu > 0) {
+                const subtotal = menu.hargaMenu * menu.kuantitasMenu;
+
+                totalPembayaran += subtotal;
+
+                console.log(`${menu.namaMenu}`);
+                console.log(`Harga     : Rp${menu.hargaMenu}`);
+                console.log(`Kuantitas : ${menu.kuantitasMenu}`);
+                console.log(`Subtotal  : Rp${subtotal}`);
+                console.log("--------------");
+            }
+        }
+
+        console.log(`Total Pembayaran: Rp${totalPembayaran}`);
+        console.log("==============");
+        console.log("");
+
+        const answer = (
+            await rl.question("Lanjutkan pembayaran (y/n): ")
+        ).trim().toLowerCase();
+
+        if (answer === "y") {
             const detailPesanan = [];
 
             for (let i = 0; i < daftarMenu.length; i++) {
@@ -195,68 +170,70 @@ function checkoutMenu() {
                 }
             }
 
-            riwayatPesanan.push({
+            arrayRiwayatPemesanan.push({
                 detailPesanan,
                 totalPembayaran
             });
-            
+
             console.log("");
-            console.log("Pesanan berhasil dibuat!");
+
+            adaPesanan = false;
 
             for (let i = 0; i < daftarMenu.length; i++) {
                 daftarMenu[i].kuantitasMenu = 0;
             }
 
+            await rl.question("Pembayaran berhasil! Tekan ENTER untuk ke menu utama...");
+
             console.log("");
-            menuUtama();
+
+            return menuUtama();
         }
-        else if (pilihan === "n") {
+        else if (answer === "n") {
             console.log("");
-            pilihMenu();
+            return menuUtama();
         }
         else {
-            console.log("Pilihan tidak valid.");
             console.log("");
-            checkoutMenu();
+            console.log("Pilihan tidak valid!");
+            console.log("");
+            return keranjangMenu();
         }
-    });
-};
+    }
+}
 
-// Membuat function riwayatPemesanan
-function riwayatPemesanan() {
-    console.log("=================");
-    console.log("RIWAYAT PEMESANAN");
-    console.log("=================");
-
-    // Jika array riwayatPesanan kosong maka akan console log
-    // Jika array riwayatPesanan tidak kosong maka akan cetak riwayatPesanan
-    if (riwayatPesanan.length === 0) {
-        console.log("Belum ada riwayat pemesanan.");
+// Function riwayatPemesanan
+async function riwayatPemesanan() {
+    if (arrayRiwayatPemesanan.length === 0) {
+        await rl.question("Riwayat pemesanan kosong... Tekan ENTER untuk ke menu utama...");
         console.log("");
+        return menuUtama();
     }
     else {
-        for (let i = 0; i < riwayatPesanan.length; i++) {
-            const pesanan = riwayatPesanan[i];
+        console.log("=================");
+        console.log("RIWAYAT PEMESANAN");
+        console.log("=================");
 
+        for (let i = 0; i < arrayRiwayatPemesanan.length; i++) {
+            const riwayat = arrayRiwayatPemesanan[i];
             console.log(`Pesanan ke-${i + 1}`);
             console.log("-----------------");
 
-            for (let j = 0; j < pesanan.detailPesanan.length; j++) {
-                const menu = pesanan.detailPesanan[j];
+            for (let j = 0; j < riwayat.detailPesanan.length; j++) {
+                const menu = riwayat.detailPesanan[j];
                 console.log(`${menu.namaMenu} x${menu.kuantitasMenu} = Rp${menu.subtotal}`);
             }
 
-            console.log(`Total: ${pesanan.totalPembayaran}`);
+            console.log(`Total pembayaran: Rp${riwayat.totalPembayaran}`);
             console.log("=================");
         }
-    }
 
-    // Tekan enter untuk kembali ke menu utama
-    rl.question("Tekan enter untuk kembali ke menu utama...", () => {
         console.log("");
-        menuUtama();
-    });
-};
 
-// Memanggil fungsi menuUtama
+        await rl.question("Tekan ENTER untuk ke menu utama...");
+        console.log("");
+        return menuUtama();
+    }
+}
+
 menuUtama();
