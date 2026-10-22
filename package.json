@@ -21,7 +21,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.mjs",
+    "lint": "eslint *.js *.cjs *.mjs **/*.js **/*.cjs **/*.mjs",
+    "lint:fix": "eslint *.js *.cjs *.mjs **/*.js **/*.cjs **/*.mjs --fix"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
