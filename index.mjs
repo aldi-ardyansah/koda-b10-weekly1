@@ -20,6 +20,10 @@ const dataMenu = await readFile(
 
 const daftarMenu = JSON.parse(dataMenu);
 
+for (const menu of daftarMenu) {
+    menu.kuantitasMenu = 0;
+}
+
 // Mendeklarasikan array kosong arrayRiwayatPemesanan
 const arrayRiwayatPemesanan = [];
 
