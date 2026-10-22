@@ -54,6 +54,9 @@ async function keranjangMenu(app) {
             totalPembayaran
         });
 
+        // Menyimpan riwayat pemesanan ke file JSON
+        await app.simpanRiwayat(app);
+
         for (const menu of app.daftarMenu) {
             menu.kuantitasMenu = 0;
         }

@@ -10,7 +10,10 @@ import pilihMenu, {
     simpanKeranjang
 } from "./functionPilihMenu.mjs";
 import keranjangMenu from "./functionKeranjangMenu.mjs";
-import riwayatPemesanan from "./functionRiwayatPemesanan.mjs";
+import riwayatPemesanan, {
+    bacaRiwayat,
+    simpanRiwayat
+} from "./functionRiwayatPemesanan.mjs";
 
 // Mendeklarasikan variabel rl untuk membuat interface readline
 const rl = readline.createInterface({ input, output });
@@ -39,9 +42,11 @@ const app = {
     pilihMenu,
     keranjangMenu,
     riwayatPemesanan,
-    simpanKeranjang
+    simpanKeranjang,
+    simpanRiwayat
 };
 
 // Memanggil functions dengan parameter app
 await bacaKeranjang(app);
+await bacaRiwayat(app);
 await menuUtama(app);
