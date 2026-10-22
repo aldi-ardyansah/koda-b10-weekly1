@@ -73,14 +73,8 @@ async function pilihMenu(app) {
 
         const idMenu = Number(answer);
 
-        if (
-            !Number.isSafeInteger(idMenu) ||
-            idMenu < 1 ||
-            idMenu > app.daftarMenu.length
-        ) {
-            console.log("");
-            console.log("Silakan masukkan opsi yang valid...");
-            console.log("");
+        if (!Number.isSafeInteger(idMenu) || idMenu < 1) {
+            console.log("Silakan masukkan ID menu yang valid...");
             continue;
         }
 

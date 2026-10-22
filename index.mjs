@@ -43,5 +43,5 @@ const app = {
 };
 
 // Memanggil functions dengan parameter app
-await menuUtama(app);
 await bacaKeranjang(app);
+await menuUtama(app);
