@@ -58,6 +58,9 @@ async function keranjangMenu(app) {
             menu.kuantitasMenu = 0;
         }
 
+        // Memperbarui file JSON setelah pembayaran berhasil
+        await app.simpanKeranjang(app);
+
         console.log("");
 
         await app.rl.question(

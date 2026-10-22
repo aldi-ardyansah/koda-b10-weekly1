@@ -1,9 +1,54 @@
- // Mengekspor function pilihMenu
+import { readFile, writeFile } from "node:fs/promises";
+
+// Mengekspor function pilihMenu
 export default pilihMenu;
+
+// Lokasi file JSON keranjang
+const fileKeranjang = new URL(
+    "./dataKeranjangMenu.json",
+    import.meta.url
+);
+
+// Membaca data keranjang dari file JSON
+export async function bacaKeranjang(app) {
+    const dataKeranjang = await readFile(fileKeranjang, "utf8");
+    const daftarMenuDipesan = JSON.parse(dataKeranjang);
+
+    // Mengatur semua kuantitas menu menjadi 0
+    for (const menu of app.daftarMenu) {
+        menu.kuantitasMenu = 0;
+    }
+
+    // Memulihkan kuantitas menu yang tersimpan
+    for (const menuDipesan of daftarMenuDipesan) {
+        const menu = app.daftarMenu.find(
+            item => item.idMenu === menuDipesan.idMenu
+        );
+
+        if (menu) {
+            menu.kuantitasMenu = menuDipesan.kuantitasMenu;
+        }
+    }
+}
+
+// Menyimpan data keranjang ke file JSON
+export async function simpanKeranjang(app) {
+    const daftarMenuDipesan = app.daftarMenu.filter(
+        menu => menu.kuantitasMenu > 0
+    );
+
+    await writeFile(
+        fileKeranjang,
+        JSON.stringify(daftarMenuDipesan, null, 4),
+        "utf8"
+    );
+}
 
 // Async function pilihMenu
 async function pilihMenu(app) {
     const batasMaksimum = 100;
+
+    // Membaca keranjang sebelum menu ditampilkan
 
     while (true) {
         console.log("==========");
@@ -39,7 +84,16 @@ async function pilihMenu(app) {
             continue;
         }
 
-        const menu = app.daftarMenu[idMenu - 1];
+        const menu = app.daftarMenu.find(
+            item => item.idMenu === idMenu
+        );
+
+        if (!menu) {
+            console.log("");
+            console.log("Menu tidak ditemukan!");
+            console.log("");
+            continue;
+        }
 
         console.log("");
         console.log("0. Kembali");
@@ -90,6 +144,9 @@ async function pilihMenu(app) {
         }
 
         menu.kuantitasMenu = totalKuantitas;
+
+        // Menyimpan perubahan keranjang ke file JSON
+        await simpanKeranjang(app);
 
         console.log("");
         console.log(

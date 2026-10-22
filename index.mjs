@@ -5,7 +5,10 @@ import { readFile } from "node:fs/promises";
 
 // Mengimpor function di file-file yang terpisah
 import menuUtama from "./functionMenuUtama.mjs";
-import pilihMenu from "./functionPilihMenu.mjs";
+import pilihMenu, {
+    bacaKeranjang,
+    simpanKeranjang
+} from "./functionPilihMenu.mjs";
 import keranjangMenu from "./functionKeranjangMenu.mjs";
 import riwayatPemesanan from "./functionRiwayatPemesanan.mjs";
 
@@ -35,8 +38,10 @@ const app = {
     menuUtama,
     pilihMenu,
     keranjangMenu,
-    riwayatPemesanan
+    riwayatPemesanan,
+    simpanKeranjang
 };
 
-// Memanggil function menuUtama dengan parameter app
-menuUtama(app);
+// Memanggil functions dengan parameter app
+await menuUtama(app);
+await bacaKeranjang(app);
