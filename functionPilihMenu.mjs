@@ -1,0 +1,100 @@
+ // Mengekspor function pilihMenu
+export default pilihMenu;
+
+// Async function pilihMenu
+async function pilihMenu(app) {
+    const batasMaksimum = 100;
+
+    while (true) {
+        console.log("==========");
+        console.log("PILIH MENU");
+        console.log("==========");
+
+        for (const menu of app.daftarMenu) {
+            console.log(
+                `${menu.idMenu}. ${menu.namaMenu} - Rp${menu.hargaMenu}`
+            );
+        }
+
+        console.log("0. Menu Utama");
+        console.log("----------");
+
+        const answer = (await app.rl.question("Pilih opsi: ")).trim();
+
+        if (answer === "0") {
+            console.log("");
+            return app.menuUtama(app);
+        }
+
+        const idMenu = Number(answer);
+
+        if (
+            !Number.isSafeInteger(idMenu) ||
+            idMenu < 1 ||
+            idMenu > app.daftarMenu.length
+        ) {
+            console.log("");
+            console.log("Silakan masukkan opsi yang valid...");
+            console.log("");
+            continue;
+        }
+
+        const menu = app.daftarMenu[idMenu - 1];
+
+        console.log("");
+        console.log("0. Kembali");
+        console.log("");
+
+        const answerJumlahMenu = (
+            await app.rl.question(`Masukkan jumlah ${menu.namaMenu}: `)
+        ).trim();
+
+        if (answerJumlahMenu === "0") {
+            console.log("");
+            continue;
+        }
+
+        const jumlah = Number(answerJumlahMenu);
+
+        if (!Number.isSafeInteger(jumlah) || jumlah <= 0) {
+            console.log("");
+            console.log("Jumlah harus berupa bilangan bulat lebih dari 0!");
+            console.log("");
+            continue;
+        }
+
+        if (
+            !Number.isSafeInteger(menu.kuantitasMenu) ||
+            menu.kuantitasMenu < 0
+        ) {
+            console.log("");
+            console.log("Data jumlah menu tidak valid!");
+            console.log("");
+            continue;
+        }
+
+        const totalKuantitas = menu.kuantitasMenu + jumlah;
+
+        if (
+            !Number.isSafeInteger(totalKuantitas) ||
+            totalKuantitas > batasMaksimum
+        ) {
+            console.log("");
+            console.log(`Jumlah pesanan maksimal ${batasMaksimum} pcs!`);
+            console.log(`Jumlah saat ini: ${menu.kuantitasMenu} pcs.`);
+            console.log(
+                `Maksimal tambahan: ${batasMaksimum - menu.kuantitasMenu} pcs.`
+            );
+            console.log("");
+            continue;
+        }
+
+        menu.kuantitasMenu = totalKuantitas;
+
+        console.log("");
+        console.log(
+            `Menu ${menu.namaMenu} sebanyak ${jumlah} pcs ditambahkan ke keranjang menu!`
+        );
+        console.log("");
+    }
+}

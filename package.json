@@ -1,0 +1,31 @@
+{
+  "name": "koda-b10-weekly1",
+  "version": "1.0.0",
+  "description": "Aplikasi pemesanan menu Mie Gacoan yang memungkinkan pelanggan melihat menu, memilih pesanan, mengelola keranjang, dan melakukan checkout.",
+  "keywords": [
+    "cli",
+    "food",
+    "shopping"
+  ],
+  "homepage": "https://github.com/aldi-ardyansah/koda-b10-weekly1#readme",
+  "bugs": {
+    "url": "https://github.com/aldi-ardyansah/koda-b10-weekly1/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aldi-ardyansah/koda-b10-weekly1.git"
+  },
+  "license": "MIT",
+  "author": "aldi-ardyansah",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0"
+  }
+}
