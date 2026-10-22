@@ -1,12 +1,12 @@
 // Import readline/promises
-import readline from 'node:readline/promises';
-import { stdin as input, stdout as output } from 'node:process';
+import readline from "node:readline/promises";
+import { stdin as input, stdout as output } from "node:process";
 
 // Mengimpor function di file-file yang terpisah
-import menuUtama from './functionMenuUtama.mjs';
-import pilihMenu from './functionPilihMenu.mjs';
-import keranjangMenu from './functionKeranjangMenu.mjs';
-import riwayatPemesanan from './functionRiwayatPemesanan.mjs';
+import menuUtama from "./functionMenuUtama.mjs";
+import pilihMenu from "./functionPilihMenu.mjs";
+import keranjangMenu from "./functionKeranjangMenu.mjs";
+import riwayatPemesanan from "./functionRiwayatPemesanan.mjs";
 
 // Mendeklarasikan variabel rl untuk membuat interface readline
 const rl = readline.createInterface({ input, output });
