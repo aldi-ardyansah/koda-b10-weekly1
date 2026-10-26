@@ -1,8 +1,6 @@
-// Mengekspor function menuUtama
-export default menuUtama;
+import { tanya } from "../utils/input.mjs";
 
-// Async function menuUtama
-async function menuUtama(app) {
+export default async function menuUtama(app) {
     while (true) {
         console.log("=========================");
         console.log("APLIKASI ORDER MIE GACOAN");
@@ -13,27 +11,24 @@ async function menuUtama(app) {
         console.log("0. Keluar");
         console.log("-------------------------");
 
-        const answer = (await app.rl.question("Pilih opsi: ")).trim();
+        const answer = await tanya(app, "Pilih opsi: ");
+
+        console.log("");
 
         if (answer === "1") {
-            console.log("");
-            return app.pilihMenu(app);
+            await app.pilihMenu(app);
         } else if (answer === "2") {
-            console.log("");
-            return app.keranjangMenu(app);
+            await app.keranjangMenu(app);
         } else if (answer === "3") {
-            console.log("");
-            return app.riwayatPemesanan(app);
+            await app.riwayatPemesanan(app);
         } else if (answer === "0") {
-            console.log("");
             console.log(
                 "Terima kasih telah menggunakan aplikasi Order Mie Gacoan!"
             );
             console.log("");
-            app.rl.close();
+
             return;
         } else {
-            console.log("");
             console.log("Silakan masukkan opsi yang valid...");
             console.log("");
         }
