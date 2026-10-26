@@ -1,4 +1,4 @@
- // Mengekspor function keranjangMenu
+// Mengekspor function keranjangMenu
 export default keranjangMenu;
 
 // Async function keranjangMenu

@@ -1,4 +1,4 @@
- // Mengekspor function menuUtama
+// Mengekspor function menuUtama
 export default menuUtama;
 
 // Async function menuUtama

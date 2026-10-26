@@ -3,24 +3,18 @@ import readline from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
 import { readFile } from "node:fs/promises";
 
-// Mengimpor function di file-file yang terpisah
-import menuUtama from "./functionMenuUtama.mjs";
-import pilihMenu, {
-    bacaKeranjang,
-    simpanKeranjang
-} from "./functionPilihMenu.mjs";
-import keranjangMenu from "./functionKeranjangMenu.mjs";
-import riwayatPemesanan, {
-    bacaRiwayat,
-    simpanRiwayat
-} from "./functionRiwayatPemesanan.mjs";
+// Mengimpor function-function
+import menuUtama from "./src/helpers/menuUtama.mjs";
+import pilihMenu, { bacaKeranjang, simpanKeranjang } from "./src/helpers/pilihMenu.mjs";
+import keranjangMenu from "./src/helpers/keranjangMenu.mjs";
+import riwayatPemesanan, { bacaRiwayat, simpanRiwayat } from "./src/helpers/riwayatPemesanan.mjs";
 
 // Mendeklarasikan variabel rl untuk membuat interface readline
 const rl = readline.createInterface({ input, output });
 
 // Membaca JSON dataDaftarMenu yang berisi objek-objek menu dengan properti idMenu, namaMenu, hargaMenu dan kuantitasMenu
 const dataMenu = await readFile(
-    new URL("./dataDaftarMenu.json", import.meta.url),
+    new URL("./db/daftarMenu.json", import.meta.url),
     "utf8"
 );
 

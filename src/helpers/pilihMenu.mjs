@@ -1,11 +1,12 @@
+// Mengimpor module File System (fs/promises)
 import { readFile, writeFile } from "node:fs/promises";
 
 // Mengekspor function pilihMenu
 export default pilihMenu;
 
-// Lokasi file JSON keranjang
+// Lokasi file JSON keranjang menu
 const fileKeranjang = new URL(
-    "./dataKeranjangMenu.json",
+    "../../db/keranjangMenu.json",
     import.meta.url
 );
 

@@ -1,13 +1,14 @@
+// Mengimpor module File System (fs/promises)
 import { readFile, writeFile } from "node:fs/promises";
-
-// Lokasi file JSON riwayat
-const fileRiwayat = new URL(
-    "./dataRiwayatPemesanan.json",
-    import.meta.url
-);
 
 // Mengekspor function riwayatPemesanan
 export default riwayatPemesanan;
+
+// Lokasi file JSON riwayat pemesanan
+const fileRiwayat = new URL(
+    "../../db/riwayatPemesanan.json",
+    import.meta.url
+);
 
 // Membaca riwayat dari file JSON
 export async function bacaRiwayat(app) {
